@@ -7,19 +7,19 @@ class GamesController < ApplicationController
   end
 
   def score
-    @word = params[:word]
-    url = "https://wagon-dictionary.herokuapp.com/#{@word}"
+    word = params[:word]
+    url = "https://wagon-dictionary.herokuapp.com/#{word}"
     word_details_serialized = URI.open(url).read
     word_details = JSON.parse(word_details_serialized)
-    word_array = @word.upcase.chars
+    word_array = word.upcase.chars
     if word_details["found"] == false
-    @result = "Sorry but #{@word.upcase} does not seem to be a valid English word..."
+    @result = "Sorry but #{word.upcase} does not seem to be a valid English word..."
     elsif word_array.all? { |letter| params[:letters].include?(letter) } && word_array.all? do |letter|
             word_array.count(letter) <= params[:letters].count(letter)
           end
-      @result = "Congratulations! #{@word.upcase} is a valid English word!"
+      @result = "Congratulations! #{word.upcase} is a valid English word!"
     else
-      @result = "Sorry but #{@word.upcase} can't be built out of #{params[:letters]}"
+      @result = "Sorry but #{word.upcase} can't be built out of #{params[:letters]}"
     end
     return @result
   end
